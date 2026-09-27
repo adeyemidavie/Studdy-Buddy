@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- Browser Tab Logo / Favicon -->
+  <link rel="icon" href="/image.png" type="image/x-icon">
+
   <title>Knowledge Base App</title>
-  <link rel="icon" href="/favicon.png" sizes="any">
   
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -17,10 +20,9 @@
       background: radial-gradient(circle at 50% 50%, #0a58ca 0%, #031b4e 65%, #010a1c 100%);
       color: #ffffff;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      overflow: hidden;
     }
 
-    /* 1. LOADING SCREEN */
+    /* 1. LOADING / SYNC SCREEN */
     .loading-screen {
       min-height: 100vh;
       display: flex;
@@ -52,13 +54,13 @@
       letter-spacing: 0.5px;
     }
 
-    /* 2. FLOATING MUSIC WIDGET (Top Right) */
+    /* 2. FLOATING MUSIC WIDGET (BOTTOM LEFT) */
     .music-widget {
       position: fixed;
-      top: 25px;
-      right: 35px;
-      z-index: 1000;
-      display: none; /* Controlled by JS after 3.5s */
+      bottom: 30px;
+      left: 30px;
+      z-index: 1050;
+      display: none;
     }
 
     .music-btn {
@@ -66,7 +68,7 @@
       backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.25);
       color: #ffffff;
-      padding: 0.5rem 1.1rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 30px;
       font-size: 0.9rem;
       font-weight: 500;
@@ -78,23 +80,17 @@
     .music-btn:hover {
       background: rgba(255, 255, 255, 0.25);
       border-color: #38edf6;
-      box-shadow: 0 0 15px rgba(56, 237, 246, 0.4);
       transform: translateY(-2px);
     }
 
-    /* 3. MAIN APP SCREEN */
-    .main-wrapper {
+    /* 3. LANDING / NAME INPUT SCREEN */
+    .landing-wrapper {
       min-height: 100vh;
-      display: none; /* Revealed after 3.5s */
+      display: none;
       flex-direction: column;
       justify-content: space-between;
       padding: 3rem 4rem;
       animation: fadeIn 0.6s ease-in-out forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.98); }
-      to { opacity: 1; transform: scale(1); }
     }
 
     .content-area {
@@ -118,7 +114,7 @@
     }
 
     .input-section {
-      width: 280px;
+      width: 300px;
     }
 
     .custom-input {
@@ -128,15 +124,159 @@
       padding: 0.75rem 1rem;
       font-size: 1rem;
       color: #1e293b;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-continue {
+      background: #38edf6;
+      color: #010a1c;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem;
+      margin-top: 10px;
+      width: 100%;
       transition: all 0.3s ease;
     }
 
-    .custom-input:focus {
-      outline: none;
-      background: #ffffff;
-      box-shadow: 0 0 0 4px rgba(56, 237, 246, 0.4);
+    .btn-continue:hover {
+      background: #71f3fa;
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(56, 237, 246, 0.5);
+    }
+
+    /* 4. SCHOOL PORTAL DASHBOARD & NAV BAR */
+    .portal-wrapper {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+      animation: fadeIn 0.6s ease-in-out forwards;
+    }
+
+    .school-navbar {
+      background: rgba(1, 10, 28, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(56, 237, 246, 0.25);
+      padding: 0.8rem 2rem;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #38edf6 !important;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-link {
+      color: #cbd5e1 !important;
+      font-weight: 500;
+      margin: 0 8px;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: #38edf6 !important;
+    }
+
+    /* Profile Dropdown Styling */
+    .profile-pic {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 2px solid #38edf6;
+      object-fit: cover;
+    }
+
+    .custom-dropdown {
+      background: rgba(3, 27, 78, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(56, 237, 246, 0.3);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+      margin-top: 10px;
+    }
+
+    .custom-dropdown .dropdown-item {
+      color: #cbd5e1;
+      padding: 0.6rem 1.2rem;
+      transition: all 0.2s ease;
+    }
+
+    .custom-dropdown .dropdown-item:hover {
+      background: rgba(56, 237, 246, 0.15);
+      color: #38edf6;
+    }
+
+    .custom-dropdown .dropdown-divider {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .dropdown:hover .dropdown-menu {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Modal / Popup Styling */
+    .modal-content-custom {
+      background: rgba(1, 10, 28, 0.95);
+      backdrop-filter: blur(15px);
+      border: 1px solid #38edf6;
+      color: white;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(56, 237, 246, 0.2);
+    }
+
+    .modal-header-custom {
+      border-bottom: 1px solid rgba(56, 237, 246, 0.2);
+    }
+
+    .stat-box {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 30%;
+    }
+
+    /* Dashboard UI */
+    .dashboard-container {
+      padding: 3rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .card-custom {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: left;
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .card-custom:hover {
       border-color: #38edf6;
+      box-shadow: 0 0 20px rgba(56, 237, 246, 0.2);
+    }
+
+    .ai-card {
+      background: linear-gradient(135deg, rgba(56, 237, 246, 0.08) 0%, rgba(13, 110, 253, 0.08) 100%);
+      border: 1px solid rgba(56, 237, 246, 0.4);
+    }
+    
+    .ai-card:hover {
+      box-shadow: 0 0 25px rgba(56, 237, 246, 0.3);
+    }
+
+    .ai-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     .footer-text {
@@ -145,48 +285,189 @@
       letter-spacing: 2px;
       color: #64748b;
       text-transform: uppercase;
+      padding: 1rem 0;
     }
   </style>
 </head>
 <body>
 
-  <!-- FIRST: Loading Screen -->
-  <div class="loading-screen" id="loadingScreen">
-    <div class="glow-spinner"></div>
-    <div class="sync-text">Synchronizing... Retrieving user data</div>
-  </div>
+  <!-- HIDDEN INPUT FOR CHANGING PROFILE PICTURE -->
+  <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
 
-  <!-- FLOATING MUSIC TOGGLE BUTTON -->
+  <!-- FLOATING MUSIC WIDGET (BOTTOM LEFT) -->
   <div class="music-widget" id="musicWidget">
     <button id="musicToggleBtn" class="music-btn d-flex align-items-center gap-2">
       <span id="musicIcon">🎵</span>
-      <span id="musicText">Play Study Music</span>
+      <span id="musicText">Study Music</span>
     </button>
-    <!-- Background Lo-Fi Royalty Free Audio Track -->
-    <audio id="bgMusic" loop src="/study-song.mp3"></audio>
+    <audio id="bgMusic" loop src="study-song.mp3"></audio>
   </div>
 
-  <!-- SECOND: Main App UI -->
-  <div class="main-wrapper" id="mainApp">
+  <!-- USER INFORMATION MODAL -->
+  <div class="modal fade" id="userInfoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title text-info">ℹ️ User Profile Information</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center py-4">
+          <img src="" id="modalProfilePic" alt="Profile" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #38edf6; object-fit: cover; margin-bottom: 15px;">
+          <h3 id="modalUserName" class="fw-bold mb-1">Student Name</h3>
+          <p class="text-secondary mb-4">Role: Activated Student Account (Ollama Local)</p>
+          
+          <div class="d-flex justify-content-between text-center mt-3">
+            <div class="stat-box">
+              <h4 class="text-info m-0">3</h4>
+              <small class="text-secondary">Enrolled Subjects</small>
+            </div>
+            <div class="stat-box">
+              <h4 class="text-info m-0">A-</h4>
+              <small class="text-secondary">Current Average</small>
+            </div>
+            <div class="stat-box">
+              <h4 class="text-info m-0" id="aiQueryCount">0</h4>
+              <small class="text-secondary">AI Queries Used</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI ASSISTANT CHAT MODAL -->
+  <div class="modal fade" id="aiModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content modal-content-custom">
+        <div class="modal-header modal-header-custom">
+          <h5 class="modal-title text-info" id="aiModalTitle">🤖 Local AI Tutor (gemma3:4b)</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body py-3">
+          <p class="text-secondary small mb-3" id="aiModalSubtitle">Ask any question about your homework, coursework, or tricky assignment problems.</p>
+          
+          <!-- Chat box history area -->
+          <div id="aiChatHistory" style="height: 320px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 10px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);">
+            <div class="text-info mb-2"><strong>AI Tutor:</strong> Hello! Connected to local Ollama (gemma3:4b). How can I help you study today?</div>
+          </div>
+
+          <!-- Input area -->
+          <div class="input-group">
+            <input type="text" id="aiUserInput" class="form-control custom-input" placeholder="Type your assignment question or test topic..." autocomplete="off">
+            <button class="btn btn-continue m-0" id="aiSendBtn" style="width: 120px;">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 1: INITIAL LOADING SCREEN -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="glow-spinner"></div>
+    <div class="sync-text" id="syncStatus">Synchronizing... Retrieving user data</div>
+  </div>
+
+  <!-- STAGE 2: NAME INPUT SCREEN -->
+  <div class="landing-wrapper" id="landingScreen">
     <div class="content-area">
-      
-      <!-- Left side text -->
       <div class="header-section">
         <h1 id="welcomeHeading">Welcome New User</h1>
         <p>Introduce Yourself</p>
       </div>
 
-      <!-- Right side input -->
       <div class="input-section">
         <input type="text" id="nameInput" class="form-control custom-input" placeholder="Enter your name" autocomplete="off">
+        <button id="continueBtn" class="btn btn-continue">Enter Portal &rarr;</button>
       </div>
-
     </div>
 
-    <!-- Bottom label -->
     <div class="footer-text">
       Knowledge Base App - v1.0
     </div>
+  </div>
+
+  <!-- STAGE 3: SCHOOL PORTAL DASHBOARD WITH NAV BAR -->
+  <div class="portal-wrapper" id="portalScreen">
+    
+    <!-- SCHOOL NAVBAR -->
+    <nav class="navbar navbar-expand-lg school-navbar">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+          🎓 KnowledgeBase Portal
+        </a>
+        <button class="navbar-toggler navbar-dark" type="button" data-bs-toggle="collapse" data-bs-target="#portalNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="portalNav">
+          
+          <ul class="navbar-links navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            <li class="nav-item"><a class="nav-link active" href="#">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">My Subjects</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Quizzes & Tests</a></li>
+          </ul>
+          
+          <!-- Profile Dropdown Menu -->
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="" alt="Profile" class="profile-pic" id="navProfilePic">
+              <span id="navUserBadge" class="fw-bold text-white">Student</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end custom-dropdown">
+              <li><a class="dropdown-item" href="#" id="editPicBtn">🖼️ Edit Profile Picture</a></li>
+              <li><a class="dropdown-item" href="#" id="userInfoBtn">ℹ️ User Information</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" id="logoutBtn">🚪 Logout</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div class="dashboard-container flex-grow-1">
+      <div class="mb-4">
+        <h2 id="portalGreeting">Hello, Student!</h2>
+        <p class="text-secondary">Welcome to your student learning hub.</p>
+      </div>
+
+      <div class="row g-4 mb-4">
+        <div class="col-md-6">
+          <div class="card-custom">
+            <h3 class="mb-3">📊 Student Status</h3>
+            <p class="text-secondary">Your profile is connected to local Ollama (gemma3:4b).</p>
+            <span class="badge bg-info text-dark px-3 py-2 mt-2">Active Local Session</span>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card-custom">
+            <h3 class="mb-3">📝 Quick Test Area</h3>
+            <p class="text-secondary">Ready to test what you have learned with instant AI evaluation.</p>
+            <button class="btn btn-continue mt-2" disabled>Ready</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <div class="card-custom ai-card">
+            <div class="ai-icon">🤖</div>
+            <h3 class="mb-2">AI Study Assistant (Ollama Local)</h3>
+            <p class="text-secondary mb-4">
+              Stuck on a tricky assignment? Need a breakdown of your last test? 
+              Your local gemma3:4b model is ready to assist you right from your machine.
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+              <button class="btn btn-continue m-0" id="askAiBtn" style="width: auto; padding: 0.6rem 1.5rem;">Ask AI a Question</button>
+              <button class="btn btn-outline-info" id="testCorrectionsBtn" style="border-radius: 8px; padding: 0.6rem 1.5rem;">Review Test Corrections</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="footer-text">Knowledge Base App - v1.0</div>
   </div>
 
   <!-- Bootstrap JS -->
@@ -196,45 +477,243 @@
 
   <script>
     const loadingScreen = document.getElementById('loadingScreen');
-    const mainApp = document.getElementById('mainApp');
+    const landingScreen = document.getElementById('landingScreen');
+    const portalScreen = document.getElementById('portalScreen');
     const musicWidget = document.getElementById('musicWidget');
+    
+    const syncStatus = document.getElementById('syncStatus');
     const nameInput = document.getElementById('nameInput');
     const welcomeHeading = document.getElementById('welcomeHeading');
+    const continueBtn = document.getElementById('continueBtn');
+    
+    // Elements for Dashboard and Profile
+    const logoutBtn = document.getElementById('logoutBtn');
+    const navUserBadge = document.getElementById('navUserBadge');
+    const navProfilePic = document.getElementById('navProfilePic');
+    const portalGreeting = document.getElementById('portalGreeting');
+    
+    // Elements for Profile Picture and Info Modal
+    const editPicBtn = document.getElementById('editPicBtn');
+    const profilePicInput = document.getElementById('profilePicInput');
+    const userInfoBtn = document.getElementById('userInfoBtn');
+    const modalProfilePic = document.getElementById('modalProfilePic');
+    const modalUserName = document.getElementById('modalUserName');
+    const aiQueryCountEl = document.getElementById('aiQueryCount');
+
+    // AI Assistant Elements
+    const askAiBtn = document.getElementById('askAiBtn');
+    const testCorrectionsBtn = document.getElementById('testCorrectionsBtn');
+    const aiChatHistory = document.getElementById('aiChatHistory');
+    const aiUserInput = document.getElementById('aiUserInput');
+    const aiSendBtn = document.getElementById('aiSendBtn');
+    const aiModalTitle = document.getElementById('aiModalTitle');
+    const aiModalSubtitle = document.getElementById('aiModalSubtitle');
+
+    // Initialize Bootstrap Modals
+    const userInfoModal = new bootstrap.Modal(document.getElementById('userInfoModal'));
+    const aiModal = new bootstrap.Modal(document.getElementById('aiModal'));
+
+    let aiQueryCount = 0;
+    let aiMode = 'general'; // 'general' or 'corrections'
+    let chatConversationHistory = []; // Keeps track of messages for Ollama chat history
 
     // Audio elements
     const bgMusic = document.getElementById('bgMusic');
     const musicToggleBtn = document.getElementById('musicToggleBtn');
     const musicIcon = document.getElementById('musicIcon');
     const musicText = document.getElementById('musicText');
-
     let isPlaying = false;
 
-    // 1. Hold loading screen for exactly 3.5 seconds
+    // 1. Initial Loading Screen
     setTimeout(() => {
-      loadingScreen.style.display = 'none'; // Hide loader
-      mainApp.style.display = 'flex';        // Show main app
-      musicWidget.style.display = 'block';   // Reveal music widget button
-      nameInput.focus();                    // Focus input box immediately
+      loadingScreen.style.display = 'none';
+      landingScreen.style.display = 'flex';
+      musicWidget.style.display = 'block';
+      nameInput.focus();
     }, 3500);
 
-    // 2. Dynamic live name typing updates
+    // 2. Dynamic typing preview
     nameInput.addEventListener('input', () => {
       const name = nameInput.value.trim();
       welcomeHeading.textContent = name ? `Welcome ${name}` : 'Welcome New User';
     });
 
-    // 3. Music Toggle Logic
+    // 3. Trigger Second Sync & Enter Portal
+    function goToPortal() {
+      const studentName = nameInput.value.trim() || 'Student';
+
+      landingScreen.style.display = 'none';
+      syncStatus.textContent = `Synchronizing portal for ${studentName}...`;
+      loadingScreen.style.display = 'flex';
+
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+        
+        navUserBadge.textContent = studentName;
+        portalGreeting.textContent = `Hello, ${studentName}!`;
+        navProfilePic.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(studentName)}&background=38edf6&color=010a1c&rounded=true&bold=true`;
+        
+        portalScreen.style.display = 'flex';
+      }, 3000);
+    }
+
+    continueBtn.addEventListener('click', goToPortal);
+    nameInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') goToPortal();
+    });
+
+    // 4. Edit Profile Picture Logic
+    editPicBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      profilePicInput.click();
+    });
+
+    profilePicInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          navProfilePic.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // 5. Show User Information Modal
+    userInfoBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const studentName = nameInput.value.trim() || 'Student';
+      modalUserName.textContent = studentName;
+      modalProfilePic.src = navProfilePic.src; 
+      userInfoModal.show();
+    });
+
+    // 6. AI Assistant Buttons
+    askAiBtn.addEventListener('click', () => {
+      aiMode = 'general';
+      aiModalTitle.textContent = '🤖 Local AI Tutor (Assignments)';
+      aiModalSubtitle.textContent = 'Ask any question about your homework, coursework, or tricky assignment problems.';
+      aiModal.show();
+      aiUserInput.focus();
+    });
+
+    testCorrectionsBtn.addEventListener('click', () => {
+      aiMode = 'corrections';
+      aiModalTitle.textContent = '📝 Local Test Corrections & Analysis';
+      aiModalSubtitle.textContent = 'Paste your test question or incorrect answers below to get detailed step-by-step corrections.';
+      aiModal.show();
+      aiUserInput.focus();
+    });
+
+    // Handle Local Ollama Chat Submission
+    async function handleAISubmit() {
+      const prompt = aiUserInput.value.trim();
+      if (!prompt) return;
+
+      // Append User message to UI
+      aiChatHistory.innerHTML += `<div class="mb-2 text-end"><strong>You:</strong> ${escapeHtml(prompt)}</div>`;
+      aiUserInput.value = '';
+      aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
+
+      aiQueryCount++;
+      aiQueryCountEl.textContent = aiQueryCount;
+
+      // Add user message to conversation array
+      chatConversationHistory.push({ role: 'user', content: prompt });
+
+      // Temporary loading indicator
+      const loadingId = 'ai-loading-' + Date.now();
+      aiChatHistory.innerHTML += `<div id="${loadingId}" class="mb-2 text-info"><em>Ollama (gemma3:4b) is thinking...</em></div>`;
+      aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
+
+      try {
+        const systemPrompt = aiMode === 'corrections' 
+          ? "You are an expert academic tutor. The user is asking for test corrections and step-by-step breakdowns of where they went wrong. Provide clear, educational corrections."
+          : "You are a helpful AI study assistant supporting students with their assignments and general learning.";
+
+        // Build messages payload for Ollama /api/chat endpoint
+        const messagesToSend = [
+          { role: 'system', content: systemPrompt },
+          ...chatConversationHistory
+        ];
+
+        // Call local Ollama API
+        const response = await fetch('http://localhost:11434/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'gemma3:4b',
+            messages: messagesToSend,
+            stream: false
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to reach local Ollama server');
+        }
+
+        const data = await response.json();
+        const aiResponseText = data.message?.content || "No response received from local model.";
+
+        // Append assistant response to conversation array
+        chatConversationHistory.push({ role: 'assistant', content: aiResponseText });
+
+        // Remove loading message and display AI answer
+        document.getElementById(loadingId).remove();
+        aiChatHistory.innerHTML += `<div class="mb-2 text-info"><strong>AI:</strong> ${escapeHtml(aiResponseText)}</div>`;
+      } catch (err) {
+        console.error(err);
+        document.getElementById(loadingId).remove();
+        aiChatHistory.innerHTML += `<div class="mb-2 text-danger"><strong>Error:</strong> Could not connect to local Ollama. Make sure Ollama is running and CORS is enabled if needed.</div>`;
+      }
+      aiChatHistory.scrollTop = aiChatHistory.scrollHeight;
+    }
+
+    aiSendBtn.addEventListener('click', handleAISubmit);
+    aiUserInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') handleAISubmit();
+    });
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // 7. Logout Action
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault(); 
+      portalScreen.style.display = 'none';
+      syncStatus.textContent = 'Logging out... Saving session data';
+      loadingScreen.style.display = 'flex';
+
+      setTimeout(() => {
+        nameInput.value = '';
+        welcomeHeading.textContent = 'Welcome New User';
+        aiChatHistory.innerHTML = '<div class="text-info mb-2"><strong>AI Tutor:</strong> Hello! Connected to local Ollama (gemma3:4b). How can I help you study today?</div>';
+        chatConversationHistory = [];
+        aiQueryCount = 0;
+        aiQueryCountEl.textContent = '0';
+        loadingScreen.style.display = 'none';
+        landingScreen.style.display = 'flex';
+        nameInput.focus();
+      }, 1500);
+    });
+
+    // 8. Music Toggle
     musicToggleBtn.addEventListener('click', () => {
       if (!isPlaying) {
-        bgMusic.play();
-        musicIcon.textContent = '🔊';
-        musicText.textContent = 'Pause Music';
-        musicToggleBtn.style.borderColor = '#38edf6';
-        isPlaying = true;
+        bgMusic.play().then(() => {
+          musicIcon.textContent = '🔊';
+          musicText.textContent = 'Pause Music';
+          musicToggleBtn.style.borderColor = '#38edf6';
+          isPlaying = true;
+        }).catch(error => {
+          console.error("Audio error:", error);
+          alert("⚠️ Audio could not play!\nCheck that 'study-song.mp3' is placed in the exact same folder as index.html.");
+        });
       } else {
         bgMusic.pause();
         musicIcon.textContent = '🎵';
-        musicText.textContent = 'Play Study Music';
+        musicText.textContent = 'Study Music';
         musicToggleBtn.style.borderColor = 'rgba(255, 255, 255, 0.25)';
         isPlaying = false;
       }
