@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Knowledge Base App</title>
-  <link rel="icon" href="/favicon.png" sizes="any">
   
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -20,7 +19,7 @@
       overflow: hidden;
     }
 
-    /* 1. LOADING SCREEN (Only thing visible at start) */
+    /* 1. LOADING SCREEN */
     .loading-screen {
       min-height: 100vh;
       display: flex;
@@ -52,10 +51,40 @@
       letter-spacing: 0.5px;
     }
 
-    /* 2. MAIN APP SCREEN (Hidden by default, fades in after 3.5s) */
+    /* 2. FLOATING MUSIC WIDGET (Top Right) */
+    .music-widget {
+      position: fixed;
+      top: 25px;
+      right: 35px;
+      z-index: 1000;
+      display: none; /* Controlled by JS after 3.5s */
+    }
+
+    .music-btn {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 0.5rem 1.1rem;
+      border-radius: 30px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: #38edf6;
+      box-shadow: 0 0 15px rgba(56, 237, 246, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* 3. MAIN APP SCREEN */
     .main-wrapper {
       min-height: 100vh;
-      display: none; /* Controlled by JavaScript */
+      display: none; /* Revealed after 3.5s */
       flex-direction: column;
       justify-content: space-between;
       padding: 3rem 4rem;
@@ -126,7 +155,17 @@
     <div class="sync-text">Synchronizing... Retrieving user data</div>
   </div>
 
-  <!-- SECOND: Main App UI (Revealed only after 3.5 seconds) -->
+  <!-- FLOATING MUSIC TOGGLE BUTTON -->
+  <div class="music-widget" id="musicWidget">
+    <button id="musicToggleBtn" class="music-btn d-flex align-items-center gap-2">
+      <span id="musicIcon">🎵</span>
+      <span id="musicText">Play Study Music</span>
+    </button>
+    <!-- Background Lo-Fi Royalty Free Audio Track -->
+    <audio id="bgMusic" loop src="/study-song.mp3"></audio>
+  </div>
+
+  <!-- SECOND: Main App UI -->
   <div class="main-wrapper" id="mainApp">
     <div class="content-area">
       
@@ -157,13 +196,23 @@
   <script>
     const loadingScreen = document.getElementById('loadingScreen');
     const mainApp = document.getElementById('mainApp');
+    const musicWidget = document.getElementById('musicWidget');
     const nameInput = document.getElementById('nameInput');
     const welcomeHeading = document.getElementById('welcomeHeading');
 
-    // 1. Hold loading screen for exactly 3.5 seconds before showing app
+    // Audio elements
+    const bgMusic = document.getElementById('bgMusic');
+    const musicToggleBtn = document.getElementById('musicToggleBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const musicText = document.getElementById('musicText');
+
+    let isPlaying = false;
+
+    // 1. Hold loading screen for exactly 3.5 seconds
     setTimeout(() => {
       loadingScreen.style.display = 'none'; // Hide loader
       mainApp.style.display = 'flex';        // Show main app
+      musicWidget.style.display = 'block';   // Reveal music widget button
       nameInput.focus();                    // Focus input box immediately
     }, 3500);
 
@@ -171,6 +220,23 @@
     nameInput.addEventListener('input', () => {
       const name = nameInput.value.trim();
       welcomeHeading.textContent = name ? `Welcome ${name}` : 'Welcome New User';
+    });
+
+    // 3. Music Toggle Logic
+    musicToggleBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        bgMusic.play();
+        musicIcon.textContent = '🔊';
+        musicText.textContent = 'Pause Music';
+        musicToggleBtn.style.borderColor = '#38edf6';
+        isPlaying = true;
+      } else {
+        bgMusic.pause();
+        musicIcon.textContent = '🎵';
+        musicText.textContent = 'Play Study Music';
+        musicToggleBtn.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+        isPlaying = false;
+      }
     });
   </script>
 </body>
